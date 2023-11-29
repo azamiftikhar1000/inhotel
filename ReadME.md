@@ -1,0 +1,3 @@
+#HotelAI
+
+Initial template
