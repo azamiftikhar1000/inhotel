@@ -1,3 +1,3 @@
-#HotelAI
+## HotelAI
 
 Initial template
