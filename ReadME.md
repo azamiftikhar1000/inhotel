@@ -1,4 +1,3 @@
 ## InHotel
 
-
 Initial template
