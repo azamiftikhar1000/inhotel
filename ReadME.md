@@ -1,3 +1,4 @@
-## HotelAI
+## InHotel
+
 
 Initial template
