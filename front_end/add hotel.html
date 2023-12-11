@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="Signup.css">
+    <script>
+      function validate() {
+        var agentName = document.getElementById('AgentName').value;
+        var agentRole = document.getElementById('AgentRole').value;
+        var hotelName = document.getElementById('HotelName').value;
+
+       if (agentName == "") {
+          alert("Agent Name Required.");
+        }  if (agentRole == "") {
+          alert("Agent Role Required.");
+        }  if (hotelName == "") {
+          alert("Hotel Name Required.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <form action="#"  method="post">
+      <h1>Update Hotel</h1>
+      <br>Upload Documents
+      <input type="file" name="uploadDocuments" id="UploadDocuments"><br><br>
+      <input type="text" name="agentName" placeholder="Enter Agent Name" id="AgentName"><br><br>
+      <input type="text" name="agentRole" placeholder="Enter Agent Role" id="AgentRole"><br><br>
+      <input type="text" name="hotelName" placeholder="Enter Hotel Name" id="HotelName"><br><br>
+      <br>
+      <input type="submit" value="Add Hotel" href="Home.html" onclick="validate()" accesskey="Enter">
+      <br><br>
+      <div class="Bottom">
+        <a href="chat.html" style="font-weight:100px;color:white; font-size:12px;">Chat with existing one  </a>
+      </div>
+    </form>
+  </body>
+</html>
