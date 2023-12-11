@@ -1,5 +1,8 @@
 from typing import Optional
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 from src.app.utils.schemas_utils import AbstractSettings, BaseModel, EmailStr
 
 
@@ -15,6 +18,7 @@ class DBSettings(AbstractSettings):
     password: str
     hostname: str
     port: int
+
 
 
 class AuthSettings(AbstractSettings):
@@ -51,7 +55,23 @@ class TestSettings(AbstractSettings):
     should_test: Optional[bool]
 
 
+class MilvusSettings(AbstractSettings):
+    """Milvus Settings
+
+    Args:
+        AbstractSettings (_type_): inherits Core settings.
+    """
+
+    MILVUS_URI: str
+    MILVUS_API_KEY: str
+    MILVUS_ALIAS: str
+    MILVUS_COLLECTION_NAME: str
+    MILVUS_COLLECTION_DIMENSION: int
+
+
 db_settings = DBSettings()
 auth_settings = AuthSettings()
 mail_settings = MailSettings()
 test_status = TestSettings()
+milvus_settings = MilvusSettings()
+

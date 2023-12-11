@@ -6,7 +6,7 @@ from pymilvus import (
     has_collection,
     connections,
 )
-from src.app.config import import settings
+from src.app.config  import milvus_settings
 
 milvus_manager = None
 
@@ -31,9 +31,7 @@ class MilvusManager(metaclass=Singleton):
         self.top_k = top_k
         self.outputFields = [
             "id",
-            "S3_URI",
-            "meta_data",
-            "filters",
+            "text"
         ]
         self.collection = Collection(self.collection_name)
 
@@ -56,24 +54,15 @@ class MilvusManager(metaclass=Singleton):
 
     def insert(
         self,
-        id,
         embedding_vector,
-        S3_URI,
+        text,
 
     ):
-        if grade_level is None:
-            grade_level = []
-        if len(embedding_vector) != self.dim:
-            return False
-
-        book = [
-            {
-                "id": id,
-                "S3_URI": S3_URI,
-        
-            }
-        ]
-        result = self.collection.insert(book)
+        document = {
+            "embedding_vector": embedding_vector,
+            "text": text,
+        }
+        result = self.collection.insert(document)
         self.collection.flush()
         return result
 
@@ -91,13 +80,7 @@ class MilvusManager(metaclass=Singleton):
     def release_collection(self):
         self.collection.release()
 
-    def search(self, search_vectors, filters=None, top_k=None):
-        """Search for similar vectors in the collection.
-        Args:
-            search_vectors (list): List of vectors to search for.
-            filters (dict): Dict of filters to apply for a hybrid search.
-            top_k (int): Number of vectors to return.
-        """
+    def search(self, search_vectors, top_k=None):
         if not top_k:
             top_k = self.top_k
 
@@ -111,23 +94,6 @@ class MilvusManager(metaclass=Singleton):
             "consistency_level": "Strong",
         }
 
-        # Hybrid search
-        if filters:
-            expr = []
-            for key, value in filters.items():
-                if value is not None:
-                    if type(value) == str:
-                        expr.append(f'filters["{key}"] == "{value}"')
-                    if type(value) == int:
-                        expr.append(f'filters["{key}"] == {value}')
-                    elif type(value) == list:
-                        # Future filters will use list of values (json_contains_any)
-                        condition = " || ".join(
-                            [f'json_contains(filters["{key}"], "{val}")' for val in value]
-                        )
-                        expr.append(f"({condition})")
-
-            search_param["expr"] = " && ".join(expr)
 
         results = self.collection.search(
             **search_param, output_fields=self.outputFields
@@ -141,13 +107,11 @@ class MilvusManager(metaclass=Singleton):
 def create_collection(collection_name, dim):
     fields = [
         FieldSchema(
-            name="id", dtype=DataType.INT64, description="int64", is_primary=True
+            name="id", dtype=DataType.INT64, description="int64", is_primary=True,auto_id=True
         ),
+       
         FieldSchema(
-            name="S3_URI", dtype=DataType.VARCHAR, max_length=300, description="S3 URI"
-        ),
-        FieldSchema(
-            name="meta_data",
+            name="text",
             dtype=DataType.VARCHAR,
             max_length=10000,
             description="Meta Data",
@@ -157,11 +121,6 @@ def create_collection(collection_name, dim):
             dtype=DataType.FLOAT_VECTOR,
             description="float embedding vector",
             dim=dim,
-        ),
-        FieldSchema(
-            name="filters",
-            dtype=DataType.JSON,
-            description="Document fields for filtering",
         ),
     ]
 
@@ -184,21 +143,24 @@ def create_index(collection, metric_type="IP", index_type="AUTOINDEX"):
 
 def setup_milvus():
     global milvus_manager
+    print("milvus_settings",milvus_settings.MILVUS_URI,milvus_settings.MILVUS_API_KEY,milvus_settings.MILVUS_ALIAS)
+    
     connections.connect(
-        alias=settings.MILVUS_ALIAS,
-        uri=settings.MILVUS_URI,
-        token=settings.MILVUS_API_KEY,
+        alias=milvus_settings.MILVUS_ALIAS,
+        uri=str(milvus_settings.MILVUS_URI),
+        token=str(milvus_settings.MILVUS_API_KEY),
+        secure=False
     )
 
-    if not has_collection(settings.MILVUS_COLLECTION_NAME):
+    if not has_collection(milvus_settings.MILVUS_COLLECTION_NAME):
         collection_object = create_collection(
-            dim=settings.MILVUS_COLLECTION_DIMENSION,
-            collection_name=settings.MILVUS_COLLECTION_NAME,
+            dim=milvus_settings.MILVUS_COLLECTION_DIMENSION,
+            collection_name=milvus_settings.MILVUS_COLLECTION_NAME,
         )
         create_index(collection_object)
 
     if milvus_manager is None:
         milvus_manager = MilvusManager(
-            settings.MILVUS_COLLECTION_NAME, settings.MILVUS_COLLECTION_DIMENSION
+            milvus_settings.MILVUS_COLLECTION_NAME, milvus_settings.MILVUS_COLLECTION_DIMENSION
         )
     return milvus_manager

@@ -1,4 +1,4 @@
-from src.app.config import import settings
+import os
 from langchain.embeddings import OpenAIEmbeddings
 
 embeddings_model = None
@@ -11,6 +11,6 @@ def setup_embedding_model():
     if embeddings_model is None:
         embeddings_model = OpenAIEmbeddings(
             model="text-embedding-ada-002",
-            openai_api_key=settings.OPENAI_API_KEY_SECONDARY
+            openai_api_key= os.getenv("OPENAI_API_KEY")
         )
     return embeddings_model
