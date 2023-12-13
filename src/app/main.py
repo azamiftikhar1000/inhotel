@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # application imports
 from src.auth.auth_router import user_router
 from src.organization.org_router import org_router
+from src.core.core_router import core_router
 from src.services.embeddings_manager import setup_embedding_model
 from src.services.milvus_manager import setup_milvus 
 from src.services.embeddings_processor import EmbeddingsProcessor
@@ -43,6 +44,7 @@ app.add_middleware(
 # Routers from the application
 app.include_router(user_router)
 app.include_router(org_router)
+app.include_router(core_router)
 
 
 # root of the server
