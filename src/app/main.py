@@ -9,27 +9,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.auth.auth_router import user_router
 from src.organization.org_router import org_router
 from src.core.core_router import core_router
-from src.services.embeddings_manager import setup_embedding_model
-from src.services.milvus_manager import setup_milvus 
-from src.services.embeddings_processor import EmbeddingsProcessor
 
+import tempfile
 import os
 
-milvus_manager = None
-embeddings_model = None
-embeddings_processor = None
 
-if "MILVUS_URI" in os.environ:
-    milvus_manager = setup_milvus()
-    embeddings_model = setup_embedding_model()
-    embeddings_processor = EmbeddingsProcessor(embeddings_model, milvus_manager)
+
+tempfile.tempdir = "/home/azam/projects/inhotel/uploads"
+
+
+
 
 # fastapi initialization
 app = FastAPI()
 
 
 # CORS Middleware
-origins: List = []
+origins: List = ["*"]
+
 
 
 app.add_middleware(

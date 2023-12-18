@@ -47,3 +47,5 @@ src/permissions/__pycache__/__init__.cpython-39.pyc
 src/permissions/__pycache__/org_permissions.cpython-39.pyc
 cert.pem
 requirements.txt
+.env
+.env

@@ -23,16 +23,19 @@
           formData.append("agentName", agentName);
           formData.append("agentRole", agentRole);
           formData.append("hotelName", hotelName);
-          formData.append("hotelURL", hotelURL); // Fix the form field name
+          formData.append("hotelURL", hotelURL);
 
           // Append the uploaded file to the form data
           var uploadDocuments = document.getElementById('UploadDocuments').files[0];
-          formData.append("uploadDocuments", uploadDocuments);
+          formData.append("upload_document", uploadDocuments);
 
           // Call the API using fetch
           fetch("http://127.0.0.1:8000/api/v1/core/add_hotel/", {
             method: "POST",
             body: formData,
+            headers: {
+              // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJwaGlsaXB0ZXN0QGdtYWlsLmNvbSIsImV4cCI6MTY4MjkxMjE5M30.bo7Vmd8tX4MZOsOOmU_zqpqs1wS84HjVYigHk_o9HCA"
+            },
           })
             .then((response) => response.json())
             .then((data) => {
@@ -58,7 +61,7 @@
     <form action="#" method="post" enctype="multipart/form-data"> <!-- Note the enctype attribute -->
       <h1>Add Hotel</h1>
       <br>Upload Documents
-      <input type="file" name="uploadDocuments" id="UploadDocuments"><br><br>
+      <input type="file" name="upload_document" id="UploadDocuments"><br><br>
       <input type="text" name="agentName" placeholder="Enter Agent Name" id="AgentName"><br><br>
       <input type="text" name="agentRole" placeholder="Enter Agent Role" id="AgentRole"><br><br>
       <input type="text" name="hotelName" placeholder="Enter Hotel Name" id="HotelName"><br><br>
@@ -77,4 +80,3 @@
     </form>
   </body>
 </html>
-
