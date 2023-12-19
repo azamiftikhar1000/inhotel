@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="home.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="chat-container">
+        <div class="chat-header">
+          <h2>Ask us anything Test Assistant_id : asst_mtV7ZBVjWmjLBf7DsEbE1WK5 </h2>
+          <input type="text" id="assistant-id-input" placeholder="Assistant ID" required>
+          <input type="text" id="thread-id-input" placeholder="Thread ID (optional)">
+        </div>
+        <div class="chat-body" id="chat-body">
+          <div class="chat-message received">
+            <p>Hello! how can I help?</p>
+          </div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Type a message..." required>
+          <button onclick="sendMessage()" accesskey="enter">Send</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

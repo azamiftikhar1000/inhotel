@@ -1,3 +1,0 @@
-## InHotel
-
-Initial template
