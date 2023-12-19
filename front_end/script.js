@@ -36,41 +36,68 @@ function validate() {
     document.getElementById("chat-body").appendChild(anchor);
   }
 
-  function sendMessage(){
-      var query = document.getElementById("message-input").value;
-      var div = document.createElement("div");
-      var p = document.createElement("p");
-      p.style.background = "white";
-      p.style.color = "black";
-      p.style.padding = "10px";
-      p.style.borderRadius = "5px";
-      p.style.display = "inline-block";
-      p.style.maxWidth = "60%";
-      p.innerHTML = query;
-      document.getElementById("chat-body").appendChild(div);
-      document.getElementById("chat-body").appendChild(p);
-      response();
-    }
+  function sendMessage() {
+    var query = document.getElementById("message-input").value;
+    if (query.trim() === '') return; // Don't send empty messages
 
-  function response(){
-      var empty = false;
-      var query = document.getElementById("message-input").value;
-      var input = query.toLowerCase();
-      var div = document.createElement("div");
-      var p = document.createElement("p");
-      p.style.background = "#2a2a2a";
-      p.style.color = "white";
-      p.style.padding = "10px";
-      p.style.borderRadius = "5px";
-      p.style.display = "inline-block";
-      p.style.margin = "0";
-      p.style.maxWidth = "75%";
-      document.getElementById("chat-body").appendChild(div);
-      document.getElementById("chat-body").appendChild(p);
+    displayUserMessage(query);
+    sendToServer(query);
+}
 
-      //Chatbot logic
+function displayUserMessage(message) {
+    var div = document.createElement("div");
+    var p = document.createElement("p");
+    p.style.background = "white";
+    p.style.color = "black";
+    p.style.padding = "10px";
+    p.style.borderRadius = "5px";
+    p.style.display = "inline-block";
+    p.style.maxWidth = "60%";
+    p.innerHTML = message;
+    div.appendChild(p);
+    document.getElementById("chat-body").appendChild(div);
+    document.getElementById("message-input").value = ""; // Clear input field
+}
 
-      p.innerHTML = "azam is a bot";
+function displayServerResponse(message) {
+    var div = document.createElement("div");
+    var p = document.createElement("p");
+    p.style.background = "#2a2a2a";
+    p.style.color = "white";
+    p.style.padding = "10px";
+    p.style.borderRadius = "5px";
+    p.style.display = "inline-block";
+    p.style.maxWidth = "75%";
+    p.innerHTML = message;
+    div.appendChild(p);
+    document.getElementById("chat-body").appendChild(div);
+}
 
-      document.getElementById("message-input").value = "";
-    }
+function sendToServer(query) {
+  var form = new FormData();
+  var assistantId = document.getElementById("assistant-id-input").value;
+  var threadId = document.getElementById("thread-id-input").value;
+
+  form.append("assistant_ID", assistantId);
+  form.append("message", query);
+  if (threadId.trim() !== '') {
+      form.append("thread_id", threadId);
+  }
+
+  var settings = {
+      "url": "http://127.0.0.1:8000/api/v1/core/chat_hotel/",
+      "method": "POST",
+      "timeout": 0,
+      "headers": {
+          "Authorization": "Bearer [Your_Token_Here]"
+      },
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form
+  };
+
+  $.ajax(settings).done(function (response) {
+      displayServerResponse(response);
+  });
+}

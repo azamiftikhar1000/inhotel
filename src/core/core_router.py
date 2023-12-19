@@ -8,7 +8,7 @@ from langchain.document_loaders import BSHTMLLoader
 from openai import OpenAI
 from src.app.utils.schemas_utils import AbstractModel
 from fastapi import Form
-
+import asyncio 
 
 from src.services.embeddings_manager import setup_embedding_model
 from src.services.milvus_manager import setup_milvus 
@@ -145,20 +145,68 @@ async def add_hotel( hotelName: str = Form(...),
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
-
 @core_router.post("/chat_hotel/", status_code=status.HTTP_201_CREATED)
+async def chat_hotel(
+    assistant_ID: str = Form(None),
+    thread_id: str = Form(None),
+    message: str = Form(None)):
 
-async def add_hotel( hotelName: str = Form(...),
-    assistant_ID: str = Form(...),
-    thread_id: str = Form(...),
-    message_id: str = Form(...),
- upload_document: UploadFile = File(...)):
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail="OPENAI_API_KEY is not set in the environment variables")
+
+    client = OpenAI(api_key=api_key)
+
     try:
+        # Initialize or update the thread with the user message
+        if not thread_id:
+            thread = client.beta.threads.create(messages=[{'role': 'user', 'content': message}])
+            thread_id = thread.id
+        else:
+            client.beta.threads.messages.create(thread_id=thread_id, role="user", content=message)
 
-    message = client.beta.threads.messages.create(
-        thread_id=thread.id,
-        role="user",
-        content="I need to solve the equation `3x + 11 = 14`. Can you help me?"
-    )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
+        # Create a new run
+        run = client.beta.threads.runs.create(thread_id=thread_id, assistant_id=assistant_ID)
+        max_retries = 35
+        while max_retries > 0:
+            await asyncio.sleep(1)
+            run = client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
+            if run.status == 'requires_action':
+                tool_outputs = await process_tool_calls(run, message, client)
+                run=client.beta.threads.runs.submit_tool_outputs(
+                    thread_id=thread_id,
+                    run_id=run.id,
+                    tool_outputs=tool_outputs
+                )
+            elif run.status not in ['queued', 'in_progress']:
+                break
+
+            max_retries -= 1
+
+        if max_retries == 0:
+            raise TimeoutError("Run did not complete in time")
+
+        # Retrieve and format the final conversation messages
+        messages = client.beta.threads.messages.list(thread_id=thread_id)
+        for m in messages:
+            if m.role=="assistant":   
+             return {"message":m.content[0].text.value,"thread_id":thread_id}
+
+    except HTTPException as http_ex:
+        raise http_ex
+    except Exception as ex:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Error processing data: {str(ex)}")
+
+async def process_tool_calls(run, user_message, client):
+    tool_outputs = []
+    for tool_call in run.required_action.submit_tool_outputs.tool_calls:
+        if tool_call.function.name == 'CustomRetriever':
+            hits = embeddings_processor.process_and_search(user_message, top_k=3)
+            hit_titles = [document.entity.get("text") for hit in hits["hits_data"] for document in hit]
+            tool_outputs.append({
+                'tool_call_id': tool_call.id,
+                'output': ('\n\n').join(hit_titles)
+            })
+    return tool_outputs
