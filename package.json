@@ -17,9 +17,11 @@
     "url": "https://github.com/azamiftikhar1000/hotelAI/issues"
   },
   "homepage": "https://github.com/azamiftikhar1000/hotelAI#readme",
-  
+
   "engines": {
     "node": "14.x"
-  }
-  
+  },
+  "dependencies": {
+  "express": "^4.17.1"
+}
 }
