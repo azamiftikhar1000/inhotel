@@ -31,7 +31,6 @@ kombu==5.2.4
 Mako==1.2.4
 MarkupSafe==2.1.2
 mypy-extensions==1.0.0
-orjson==3.8.5
 packaging==23.0
 passlib==1.7.4
 pathspec==0.11.0
