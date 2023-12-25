@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+                 <!-- Logo Image -->
+                 <img src="https://assets-global.website-files.com/657ae60d92ed823479730a3f/65809d78e3e890d4d823fbfa_inhotelio-yellow-white-transparent-p-500.png" alt="Inhotelio Logo"   width="90"
+                 height="20" class="logo">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papercups Configuration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding: 20px;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text color */
+        }
+
+        .config-form {
+            max-width: 500px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: black; /* Black text for form */
+        }
+
+        .config-form input, .config-form button, .config-form .form-check-label {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="config-form">
+        <form>
+
+            <div class="form-group">
+                <input type="text" class="form-control" id="title" placeholder="Title" value="Welcome to Inhotels.io">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="subtitle" placeholder="Subtitle">
+            </div>
+            <!-- <div class="form-group">
+                <input type="text" class="form-control" id="newMessagePlaceholder" placeholder="New Message Placeholder">
+            </div> -->
+            <!-- <div class="form-group">
+                <input type="text" class="form-control" id="emailInputPlaceholder" placeholder="Email Input Placeholder">
+            </div> -->
+            <div class="form-group">
+                <input type="text" class="form-control" id="newMessagesNotificationText" placeholder="New Messages Notification Text">
+            </div>
+            <div class="form-group">
+                <input type="color" class="form-control" id="primaryColor" value="#AD88E6">
+            </div>
+            
+            <div class="form-group">
+                <input type="text" class="form-control" id="greeting" placeholder="Greeting">
+            </div>
+
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="showAgentAvailability">
+                <label class="form-check-label" for="showAgentAvailability">Show Agent Availability</label>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="agentAvailableText" placeholder="Agent Available Text">
+            </div>
+            <!-- Uncomment or add more input fields as necessary -->
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="defaultIsOpen">
+                <label class="form-check-label" for="defaultIsOpen">Default Is Open</label>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="customIconUrl" placeholder="Custom Icon URL">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="applyConfiguration()">Apply Configuration</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</div>
+</body>
+
+<script>
+
+    function applyConfiguration() {
+        // If Papercups is already defined, we need to reset it
+        if (window.Papercups) {
+            delete window.Papercups;
+        }
+
+        var options = {
+            accountId: "f63078f8-a445-491e-a3a3-f1c3900b9592",
+            title: document.getElementById('title').value,
+            subtitle: document.getElementById('subtitle').value,
+            // newMessagePlaceholder: document.getElementById('newMessagePlaceholder').value,
+            // emailInputPlaceholder: document.getElementById('emailInputPlaceholder').value,
+            newMessagesNotificationText: document.getElementById('newMessagesNotificationText').value,
+            primaryColor: document.getElementById('primaryColor').value ,
+            greeting: document.getElementById('greeting').value,
+            showAgentAvailability: document.getElementById('showAgentAvailability').checked,
+            agentAvailableText: document.getElementById('agentAvailableText').value,
+            // agentUnavailableText: document.getElementById('agentUnavailableText').value,
+            // baseUrl: document.getElementById('baseUrl').value,
+            // iframeUrlOverride: document.getElementById('iframeUrlOverride').value,
+            // requireEmailUpfront: document.getElementById('requireEmailUpfront').checked,
+            defaultIsOpen: document.getElementById('defaultIsOpen').checked|| true,
+            customIconUrl: document.getElementById('customIconUrl').value
+        };
+
+        window.Papercups = {config: options};
+
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.async = true;
+        script.defer = true;
+        script.src = "https://app.papercups.io/widget.js";
+        document.head.appendChild(script);
+    }
+     document.addEventListener('DOMContentLoaded', function() {
+    applyConfiguration();
+});
+    
+</script>
+</body>
+</html>
+
