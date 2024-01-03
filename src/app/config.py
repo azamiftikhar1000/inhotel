@@ -1,9 +1,19 @@
 from typing import Optional
 import os
 from dotenv import load_dotenv
-
+from pydantic import BaseModel
 load_dotenv()
-from src.app.utils.schemas_utils import AbstractSettings, BaseModel, EmailStr
+
+class AbstractModel(BaseModel):
+    """Schema Models
+
+    Args:
+        BaseModel (_type_): Inherits from Pydantic and specifies Config
+    """
+
+    class Config:
+        orm_mode = True
+        use_enum_values = True
 
 
 class DBSettings(AbstractSettings):
@@ -21,40 +31,6 @@ class DBSettings(AbstractSettings):
 
 
 
-class AuthSettings(AbstractSettings):
-    """Authentication Settings
-
-    Args:
-        AbstractSettings (_type_): inherits Core settings.
-    """
-
-    access_secret_key: str
-    refresh_secret_key: str
-    access_time_exp: int
-    refresh_time_exp: int
-    algorithm: str
-    frontend_url: str
-
-
-class MailSettings(AbstractSettings):
-    """Mail Settings
-
-    Args:
-        AbstractSettings (_type_): inherits Core settings.
-    """
-
-    mail_username: str
-    mail_password: str
-    mail_from: EmailStr
-    mail_port: int
-    mail_server: str
-    mail_from_name: str
-
-
-class TestSettings(AbstractSettings):
-    should_test: Optional[bool]
-
-
 class MilvusSettings(AbstractSettings):
     """Milvus Settings
 
@@ -70,8 +46,5 @@ class MilvusSettings(AbstractSettings):
 
 
 db_settings = DBSettings()
-auth_settings = AuthSettings()
-mail_settings = MailSettings()
-test_status = TestSettings()
 milvus_settings = MilvusSettings()
 

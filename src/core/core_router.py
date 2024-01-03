@@ -6,7 +6,6 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import BSHTMLLoader
 from openai import OpenAI
-from src.app.utils.schemas_utils import AbstractModel
 from fastapi import Form
 import asyncio 
 
@@ -16,6 +15,17 @@ from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 
+class AbstractModel(BaseModel):
+    """Schema Models
+
+    Args:
+        BaseModel (_type_): Inherits from Pydantic and specifies Config
+    """
+
+    class Config:
+        orm_mode = True
+        use_enum_values = True
+        
 def scrape_html_from_url(url):
     try:
         # Send an HTTP GET request to the URL

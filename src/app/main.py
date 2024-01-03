@@ -6,8 +6,6 @@ from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 
 # application imports
-from src.auth.auth_router import user_router
-from src.organization.org_router import org_router
 from src.core.core_router import core_router
 
 import tempfile
@@ -15,7 +13,7 @@ import os
 
 
 
-tempfile.tempdir = "/home/azam/projects/inhotel/uploads"
+tempfile.tempdir = "./uploads"
 
 
 
@@ -39,7 +37,6 @@ app.add_middleware(
 
 
 # Routers from the application
-app.include_router(user_router)
 app.include_router(org_router)
 app.include_router(core_router)
 
