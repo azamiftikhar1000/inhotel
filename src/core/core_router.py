@@ -15,6 +15,7 @@ from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 
+
 class AbstractModel(BaseModel):
     """Schema Models
 
