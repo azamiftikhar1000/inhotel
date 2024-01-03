@@ -35,4 +35,5 @@ pypdf
 pyarrow
 pymilvus
 langchain
+gunicorn
 openai
