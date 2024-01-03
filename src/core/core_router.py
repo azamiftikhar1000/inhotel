@@ -9,9 +9,9 @@ from openai import OpenAI
 from fastapi import Form
 import asyncio 
 
-from src.services.embeddings_manager import setup_embedding_model
-from src.services.milvus_manager import setup_milvus 
-from src.services.embeddings_processor import EmbeddingsProcessor
+# from src.services.embeddings_manager import setup_embedding_model
+# from src.services.milvus_manager import setup_milvus 
+# from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 
@@ -60,10 +60,10 @@ milvus_manager = None
 embeddings_model = None
 embeddings_processor = None
 
-if "MILVUS_URI" in os.environ:
-    milvus_manager = setup_milvus()
-    embeddings_model = setup_embedding_model()
-    embeddings_processor = EmbeddingsProcessor(embeddings_model, milvus_manager)
+# if "MILVUS_URI" in os.environ:
+#     milvus_manager = setup_milvus()
+#     embeddings_model = setup_embedding_model()
+#     embeddings_processor = EmbeddingsProcessor(embeddings_model, milvus_manager)
 
 
 # application imports
