@@ -37,7 +37,6 @@ app.add_middleware(
 
 
 # Routers from the application
-app.include_router(org_router)
 app.include_router(core_router)
 
 

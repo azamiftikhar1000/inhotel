@@ -2,8 +2,8 @@
 from fastapi import APIRouter, status, HTTPException, File, UploadFile
 import os
 import tempfile
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain.document_loaders import PyPDFLoader
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import BSHTMLLoader
 from openai import OpenAI
 from fastapi import Form
