@@ -1,5 +1,3 @@
-# python imports
-from typing import List
 
 # fastapi  imports
 from fastapi import Depends, FastAPI, status
@@ -23,7 +21,7 @@ app = FastAPI()
 
 
 # CORS Middleware
-origins: List = ["*"]
+origins= ["*"]
 
 
 
