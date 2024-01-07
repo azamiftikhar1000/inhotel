@@ -34,7 +34,9 @@ uvicorn==0.20.0
 tiktoken
 pypdf
 pyarrow
-pymilvus
+grpcio==1.56.0
+grpcio-tools==1.56.0
+pymilvus==2.3.0
 langchain
 gunicorn
 openai
