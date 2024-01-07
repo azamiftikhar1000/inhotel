@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 
 # application imports
-# from src.core.core_router import core_router
+from src.core.core_router import core_router
 
 import tempfile
 import os

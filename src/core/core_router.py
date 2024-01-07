@@ -2,16 +2,16 @@
 from fastapi import APIRouter, status, HTTPException, File, UploadFile
 import os
 import tempfile
-# from langchain.document_loaders import PyPDFLoader
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import BSHTMLLoader
 from openai import OpenAI
 from fastapi import Form
 import asyncio 
 
-# from src.services.embeddings_manager import setup_embedding_model
-# from src.services.milvus_manager import setup_milvus 
-# from src.services.embeddings_processor import EmbeddingsProcessor
+from src.services.embeddings_manager import setup_embedding_model
+from src.services.milvus_manager import setup_milvus 
+from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 

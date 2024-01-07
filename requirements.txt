@@ -34,7 +34,7 @@ uvicorn==0.20.0
 tiktoken
 pypdf
 pyarrow
-# pymilvus
+pymilvus
 langchain
 gunicorn
 openai
