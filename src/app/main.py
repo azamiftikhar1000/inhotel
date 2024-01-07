@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 
 # application imports
-from src.core.core_router import core_router
+# from src.core.core_router import core_router
 
 import tempfile
 import os
@@ -35,10 +35,14 @@ app.add_middleware(
 
 
 # Routers from the application
-app.include_router(core_router)
+# app.include_router(core_router)
 
 
 # root of the server
 @app.get("/", status_code=status.HTTP_200_OK)
+def root() -> dict:
+    return {"message": "Welcome to Inhotel.io", "docs": "/docs"}
+
+@app.get("/test", status_code=status.HTTP_200_OK)
 def root() -> dict:
     return {"message": "Welcome to Inhotel.io", "docs": "/docs"}
