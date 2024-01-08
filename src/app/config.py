@@ -27,18 +27,18 @@ class AbstractSettings(BaseSettings):
 
 
 
-class DBSettings(AbstractSettings):
-    """Database Settings
+# class DBSettings(AbstractSettings):
+#     """Database Settings
 
-    Args:
-        AbstractSettings (_type_): inherits Core settings.
-    """
+#     Args:
+#         AbstractSettings (_type_): inherits Core settings.
+#     """
 
-    name: str
-    username: str
-    password: str
-    hostname: str
-    port: int
+#     name: str
+#     username: str
+#     password: str
+#     hostname: str
+#     port: int
 
 
 
@@ -56,6 +56,6 @@ class MilvusSettings(AbstractSettings):
     MILVUS_COLLECTION_DIMENSION: int
 
 
-db_settings = DBSettings()
+# db_settings = DBSettings()
 milvus_settings = MilvusSettings()
 
