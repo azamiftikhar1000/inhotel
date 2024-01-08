@@ -15,6 +15,8 @@ from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
+from flask import Flask, request, jsonify
+
 
 class AbstractModel(BaseModel):
     """Schema Models
@@ -173,7 +175,18 @@ async def add_hotel(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
 
+@app.route('/api/webhook', methods=['POST'])
+def webhook():
+    data = request.json
+    event = data['event']
+    payload = data['payload']
 
+    if event == 'webhook:verify':
+        # Respond with the random string in the payload
+        return payload
+    elif event in ['message:created', 'conversation:created', 'customer:created']:
+        return jsonify({'ok': True})
+    
 @core_router.post("/chat_hotel/", status_code=status.HTTP_201_CREATED)
 async def chat_hotel(
     assistant_ID: str = Form(None),
