@@ -186,6 +186,7 @@ async def webhook(data: WebhookPayload):
         # Respond with the random string in the payload
         return data.payload
     elif data.event in ['message:created', 'conversation:created', 'customer:created']:
+        print(data.payload)
         return {'ok': True}
 
 @core_router.post("/chat_hotel/", status_code=status.HTTP_201_CREATED)
