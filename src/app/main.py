@@ -30,7 +30,7 @@ app.add_middleware(
 
 
 # Routers from the application
-# app.include_router(core_router)
+app.include_router(core_router)
 
 
 # root of the server
