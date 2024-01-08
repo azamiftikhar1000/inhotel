@@ -6,7 +6,7 @@ from pymilvus import (
     has_collection,
     connections,
 )
-from src.app.config  import milvus_settings
+from src.app.config import milvus_settings
 
 milvus_manager = None
 
@@ -22,17 +22,19 @@ class Singleton(type):
 
 class MilvusManager(metaclass=Singleton):
     def __init__(
-        self, collection_name, dim, metric_type="IP", index_type="AUTOINDEX", top_k=3,
+        self,
+        collection_name,
+        dim,
+        metric_type="IP",
+        index_type="AUTOINDEX",
+        top_k=3,
     ):
         self.collection_name = collection_name
         self.dim = dim
         self.metric_type = metric_type
         self.index_type = index_type
         self.top_k = top_k
-        self.outputFields = [
-            "id",
-            "text"
-        ]
+        self.outputFields = ["id", "text"]
         self.collection = Collection(self.collection_name)
 
     def drop_collection(self):
@@ -49,14 +51,16 @@ class MilvusManager(metaclass=Singleton):
         return response
 
     def query(self, id_list):
-        res = self.collection.query(expr=f"id in {id_list}", output_fields=["id"],)
+        res = self.collection.query(
+            expr=f"id in {id_list}",
+            output_fields=["id"],
+        )
         return res
 
     def insert(
         self,
         embedding_vector,
         text,
-
     ):
         document = {
             "embedding_vector": embedding_vector,
@@ -89,11 +93,12 @@ class MilvusManager(metaclass=Singleton):
         search_param = {
             "data": search_vectors,
             "anns_field": "embedding_vector",
-            "param": {"metric_type": self.metric_type,},
+            "param": {
+                "metric_type": self.metric_type,
+            },
             "limit": top_k,
             "consistency_level": "Strong",
         }
-
 
         results = self.collection.search(
             **search_param, output_fields=self.outputFields
@@ -107,9 +112,12 @@ class MilvusManager(metaclass=Singleton):
 def create_collection(collection_name, dim):
     fields = [
         FieldSchema(
-            name="id", dtype=DataType.INT64, description="int64", is_primary=True,auto_id=True
+            name="id",
+            dtype=DataType.INT64,
+            description="int64",
+            is_primary=True,
+            auto_id=True,
         ),
-       
         FieldSchema(
             name="text",
             dtype=DataType.VARCHAR,
@@ -143,13 +151,18 @@ def create_index(collection, metric_type="IP", index_type="AUTOINDEX"):
 
 def setup_milvus():
     global milvus_manager
-    print("milvus_settings",milvus_settings.MILVUS_URI,milvus_settings.MILVUS_API_KEY,milvus_settings.MILVUS_ALIAS)
-    
+    print(
+        "milvus_settings",
+        milvus_settings.MILVUS_URI,
+        milvus_settings.MILVUS_API_KEY,
+        milvus_settings.MILVUS_ALIAS,
+    )
+
     connections.connect(
         alias=milvus_settings.MILVUS_ALIAS,
         uri=str(milvus_settings.MILVUS_URI),
         token=str(milvus_settings.MILVUS_API_KEY),
-        secure=False
+        secure=False,
     )
 
     if not has_collection(milvus_settings.MILVUS_COLLECTION_NAME):
@@ -161,6 +174,7 @@ def setup_milvus():
 
     if milvus_manager is None:
         milvus_manager = MilvusManager(
-            milvus_settings.MILVUS_COLLECTION_NAME, milvus_settings.MILVUS_COLLECTION_DIMENSION
+            milvus_settings.MILVUS_COLLECTION_NAME,
+            milvus_settings.MILVUS_COLLECTION_DIMENSION,
         )
     return milvus_manager

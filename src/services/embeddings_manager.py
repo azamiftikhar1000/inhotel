@@ -10,7 +10,6 @@ def setup_embedding_model():
     global embeddings_model
     if embeddings_model is None:
         embeddings_model = OpenAIEmbeddings(
-            model="text-embedding-ada-002",
-            openai_api_key= os.getenv("OPENAI_API_KEY")
+            model="text-embedding-ada-002", openai_api_key=os.getenv("OPENAI_API_KEY")
         )
     return embeddings_model

@@ -1,7 +1,9 @@
 import os
 from dotenv import load_dotenv
-from pydantic import BaseModel,BaseSettings
+from pydantic import BaseModel, BaseSettings
+
 load_dotenv()
+
 
 class AbstractModel(BaseModel):
     """Schema Models
@@ -26,7 +28,6 @@ class AbstractSettings(BaseSettings):
         env_file = ".env"
 
 
-
 # class DBSettings(AbstractSettings):
 #     """Database Settings
 
@@ -39,7 +40,6 @@ class AbstractSettings(BaseSettings):
 #     password: str
 #     hostname: str
 #     port: int
-
 
 
 class MilvusSettings(AbstractSettings):
@@ -58,4 +58,3 @@ class MilvusSettings(AbstractSettings):
 
 # db_settings = DBSettings()
 milvus_settings = MilvusSettings()
-

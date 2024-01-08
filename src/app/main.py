@@ -1,4 +1,3 @@
-
 # fastapi  imports
 from fastapi import Depends, FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,10 +9,7 @@ import tempfile
 import os
 
 
-
 tempfile.tempdir = "./uploads"
-
-
 
 
 # fastapi initialization
@@ -21,8 +17,7 @@ app = FastAPI()
 
 
 # CORS Middleware
-origins= ["*"]
-
+origins = ["*"]
 
 
 app.add_middleware(
@@ -42,6 +37,7 @@ app.add_middleware(
 @app.get("/", status_code=status.HTTP_200_OK)
 def root() -> dict:
     return {"message": "Welcome to Inhotel.io", "docs": "/docs"}
+
 
 @app.get("/test", status_code=status.HTTP_200_OK)
 def root() -> dict:

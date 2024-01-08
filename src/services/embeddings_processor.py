@@ -4,8 +4,6 @@ class EmbeddingsProcessor:
         self.milvus_manager = milvus_manager
 
     def process_and_save(self, text):
-
-
         embedding_vector = self.embeddings_model.embed_query(text)
         result = self.milvus_manager.insert(
             embedding_vector,
