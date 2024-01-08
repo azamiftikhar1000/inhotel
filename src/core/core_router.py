@@ -194,10 +194,6 @@ async def webhook(data: WebhookPayload):
         user_message=body
         conversation_id=conversation_id
 
-        if response.ok:
-            print("Message sent successfully")
-        else:
-            print(f"Error sending message: {response.text}")
         thread_id = None 
 
         # Directly call chat_hotel function
