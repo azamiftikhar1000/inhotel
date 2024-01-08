@@ -185,8 +185,52 @@ async def webhook(data: WebhookPayload):
     if data.event == 'webhook:verify':
         # Respond with the random string in the payload
         return data.payload
-    elif data.event in ['message:created', 'conversation:created', 'customer:created']:
-        print(data.payload)
+    elif data.event == 'message:created':
+
+        account_id = data.payload.account_id
+        body = data.payload.body
+        conversation_id = data.payload.conversation_id
+        customer_id = data.payload.customer_id
+
+        assistant_ID="asst_mtV7ZBVjWmjLBf7DsEbE1WK5"
+        user_message=body
+        conversation_id=conversation_id
+
+        if response.ok:
+            print("Message sent successfully")
+        else:
+            print(f"Error sending message: {response.text}")
+        thread_id = None 
+
+        # Directly call chat_hotel function
+        chat_response = await chat_hotel(
+            assistant_ID=assistant_ID,
+            thread_id=thread_id,
+            message=user_message
+        )
+
+        API_KEY="SFMyNTY.g2gDbAAAAAJoAmQAB3VzZXJfaWRiAAAfaGgCZAAKYWNjb3VudF9pZG0AAAAkZjYzMDc4ZjgtYTQ0NS00OTFlLWEzYTMtZjFjMzkwMGI5NTkyam4GAHxs8cOMAWIAAVGA.W0UOWmYiPppwStrK6m6hlmIkeD0EhBxeGSHEvqAPZsI"
+        headers = {
+            'Authorization': f'Bearer {API_KEY}',
+            'Content-Type': 'application/json'
+        }
+        payload = {
+            'message': {
+                'body': chat_response.get("message"),
+                'conversation_id': conversation_id
+            }
+        }
+
+        # Send a POST request to the Papercups API
+        response = requests.post('https://app.papercups.io/api/v1/messages', headers=headers, json=payload)
+
+
+        # Handle the response from chat_hotel
+        if  chat_response.get("message"):
+            print("Chat response:",  chat_response.get("message"))
+        else:
+            print("No response from chat_hotel")
+
         return {'ok': True}
 
 @core_router.post("/chat_hotel/", status_code=status.HTTP_201_CREATED)
