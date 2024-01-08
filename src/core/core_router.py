@@ -176,7 +176,8 @@ async def add_hotel(
 
 class WebhookPayload(BaseModel):
     event: str
-    payload: dict
+    payload: str
+
 
 
 @core_router.post('/api/webhook', status_code=status.HTTP_201_CREATED)
