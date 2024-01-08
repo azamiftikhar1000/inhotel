@@ -15,7 +15,7 @@ from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
-
+from typing import Any
 
 class AbstractModel(BaseModel):
     """Schema Models
@@ -176,7 +176,7 @@ async def add_hotel(
 
 class WebhookPayload(BaseModel):
     event: str
-    payload: str
+    payload: Any
 
 
 
