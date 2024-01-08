@@ -175,7 +175,7 @@ async def add_hotel(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
 
-@app.route('/api/webhook', methods=['POST'])
+@core_router.post('/api/webhook',status_code=status.HTTP_201_CREATED)
 def webhook():
     data = request.json
     event = data['event']
