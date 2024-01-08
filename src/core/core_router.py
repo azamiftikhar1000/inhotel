@@ -188,14 +188,14 @@ async def webhook(data: WebhookPayload):
     elif data.event == 'message:created':
 
         body = data.payload.get("body")
-        if data.payload.get("body").get("user").get("role")=="admin":
+        if len(body) > 30 :
             return {'ok': True}
         conversation_id = data.payload.get("conversation_id")
 
         assistant_ID="asst_mtV7ZBVjWmjLBf7DsEbE1WK5"
         user_message=body
         conversation_id=conversation_id
-
+        thread_id=None
 
         # Directly call chat_hotel function
         chat_response = await chat_hotel(
