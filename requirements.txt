@@ -40,3 +40,4 @@ pymilvus==2.3.0
 langchain
 gunicorn
 openai
+beautifulsoup4
