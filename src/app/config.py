@@ -15,6 +15,18 @@ class AbstractModel(BaseModel):
         use_enum_values = True
 
 
+class AbstractSettings(BaseSettings):
+    """Settings Models
+
+    Args:
+        BaseModel (_type_): Inherits from Pydantic and specifies Config
+    """
+
+    class Config:
+        env_file = ".env"
+
+
+
 class DBSettings(AbstractSettings):
     """Database Settings
 
