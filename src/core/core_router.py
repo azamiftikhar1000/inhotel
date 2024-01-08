@@ -72,8 +72,6 @@ if "MILVUS_URI" in os.environ:
     embeddings_processor = EmbeddingsProcessor(embeddings_model, milvus_manager)
 
 
-# application imports
-from src.core import schemas
 
 # API Router
 core_router = APIRouter(prefix="/api/v1/core", tags=["Core APIs"])
