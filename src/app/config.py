@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from pydantic import BaseModel,BaseSettings
 load_dotenv()
 
 class AbstractModel(BaseModel):
