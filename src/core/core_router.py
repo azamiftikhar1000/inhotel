@@ -15,7 +15,6 @@ from src.services.embeddings_processor import EmbeddingsProcessor
 import requests
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
-from flask import Flask, request, jsonify
 
 
 class AbstractModel(BaseModel):
