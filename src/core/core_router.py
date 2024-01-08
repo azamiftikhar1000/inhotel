@@ -175,18 +175,19 @@ async def add_hotel(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing data: {str(e)}")
 
-@core_router.post('/api/webhook',status_code=status.HTTP_201_CREATED)
-def webhook():
-    data = request.json
-    event = data['event']
-    payload = data['payload']
+class WebhookPayload(BaseModel):
+    event: str
+    payload: dict
 
-    if event == 'webhook:verify':
+
+@core_router.post('/api/webhook', status_code=status.HTTP_201_CREATED)
+async def webhook(data: WebhookPayload):
+    if data.event == 'webhook:verify':
         # Respond with the random string in the payload
-        return payload
-    elif event in ['message:created', 'conversation:created', 'customer:created']:
-        return jsonify({'ok': True})
-    
+        return data.payload
+    elif data.event in ['message:created', 'conversation:created', 'customer:created']:
+        return {'ok': True}
+
 @core_router.post("/chat_hotel/", status_code=status.HTTP_201_CREATED)
 async def chat_hotel(
     assistant_ID: str = Form(None),
