@@ -187,10 +187,8 @@ async def webhook(data: WebhookPayload):
         return data.payload
     elif data.event == 'message:created':
 
-        account_id = data.payload.account_id
-        body = data.payload.body
-        conversation_id = data.payload.conversation_id
-        customer_id = data.payload.customer_id
+        body = data.payload.get("body")
+        conversation_id = data.payload.get("conversation_id")
 
         assistant_ID="asst_mtV7ZBVjWmjLBf7DsEbE1WK5"
         user_message=body
